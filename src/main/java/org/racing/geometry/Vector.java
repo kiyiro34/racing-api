@@ -4,6 +4,10 @@ import java.util.List;
 
 public record Vector(double x, double y) {
 
+    public static Vector of(Point start, Point end ){
+        return new Vector(end.x()- start.x(), end.y()- start.y());
+    }
+
     public static Vector init(){
         return new Vector(0, 0);
     }
@@ -25,5 +29,9 @@ public record Vector(double x, double y) {
 
     public Vector multiply(double k){
         return new Vector(x*k, y*k);
+    }
+
+    public Vector normalize(){
+        return this.multiply((1/norm()));
     }
 }

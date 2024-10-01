@@ -23,7 +23,7 @@ public class RaceMaintainer {
 
     public RaceMaintainer(){
         List<Car> carList = new ArrayList<Car>();
-        carList.add(new Car("Mercedes", new Motor(441299,650.0), 500.0));
+        carList.add(new Car("Mercedes", new Motor(441299,1300.0), 500.0));
         this.race= new Race(carList);
     }
 
@@ -41,14 +41,22 @@ public class RaceMaintainer {
                 try {
                     car.update(Duration.ofMillis(50));
                     positionHandler.envoyerPosition(car.getPosition().x(), car.getPosition().y());
-                    System.out.println(car);
-                    System.out.println("propulsion");System.out.println(car.getPropulsion().getVector());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }, 0, 50, TimeUnit.MILLISECONDS);
+
+        executor.schedule(() -> {
+            if (isRunning) {
+                car.breakCar(0.1,Duration.ofMillis(50));
+                System.out.println("breaking !");
+                System.out.println(car.getBreaking().getVector());
+            }
+        }, 8, TimeUnit.SECONDS);
     }
+
+
 
     public void stopSimulation() {
         System.out.println("We stop");
