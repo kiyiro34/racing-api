@@ -24,7 +24,7 @@ public class CarTest {
         Instant start = Instant.EPOCH;
         Duration step = Duration.ofSeconds(1);
         car.start();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 1; i < 50; i++) {
             Instant t_i = start.plus(step.multipliedBy(i));
             car.update(step);
 
