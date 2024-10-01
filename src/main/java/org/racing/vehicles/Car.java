@@ -16,9 +16,9 @@ import java.util.List;
 
 import static org.racing.utilities.Constants.*;
 
-@Getter
 @Setter
 @ToString
+@Getter
 public class Car {
     private String brand;
     private double mass;
@@ -51,7 +51,7 @@ public class Car {
         this.acceleration = new Vector(constantAcceleration,0);
         this.speed = speed;
         this.position = newPosition(speed,STARTING_DURATION);
-        this.propulsion = new Propulsion(this, Vector.init(),0.2);
+        this.propulsion = new Propulsion(this, Vector.init(),1.0);
     }
 
     public void update(Duration duration){
@@ -66,8 +66,8 @@ public class Car {
                 (propulsion.getVector().y()+forces.stream().mapToDouble(force->force.getVector().y()).sum())/mass
         );
         this.speed = new Vector(
-                speed.x()+acceleration.x()*duration.getSeconds(),
-                speed.y()+acceleration.y()*duration.getSeconds()
+                speed.x()+acceleration.x()*duration.toMillis()*MILLI_TO_SECONDS,
+                speed.y()+acceleration.y()*duration.toMillis()*MILLI_TO_SECONDS
         );
     }
 
@@ -79,8 +79,8 @@ public class Car {
 
     private Point newPosition(Vector speed, Duration t){
         return new Point(
-                position.x()+ t.getSeconds()*speed.x(),
-                position.y()+ t.getSeconds()*speed.y()
+                position.x()+ t.toMillis()*MILLI_TO_SECONDS*speed.x(),
+                position.y()+ t.toMillis()*MILLI_TO_SECONDS*speed.y()
         );
     }
 }
