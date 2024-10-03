@@ -1,8 +1,13 @@
 package org.racing.services;
 
+import org.racing.circuit.Circuit;
+import org.racing.circuit.Line;
 import org.racing.circuit.Race;
 import org.racing.config.PositionHandler;
+import org.racing.geometry.CoordinateSystem;
 import org.racing.geometry.Point;
+import org.racing.geometry.Segment;
+import org.racing.geometry.Vector;
 import org.racing.vehicles.Car;
 import org.racing.vehicles.Motor;
 import org.springframework.stereotype.Service;
@@ -14,53 +19,93 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
+
+import static org.racing.utilities.Constants.RACE;
 
 @Service
 public class RaceMaintainer {
 
     private Race race;
     private ScheduledExecutorService executor;
-
-    public RaceMaintainer(){
-        List<Car> carList = new ArrayList<Car>();
-        carList.add(new Car("Mercedes", new Motor(441299,1300.0), 500.0));
-        this.race= new Race(carList);
-    }
-
     private boolean isRunning = false;
 
+    public RaceMaintainer() {
+        resetRace();
+    }
+
+    public void resetRace() {
+        this.race = RACE;
+    }
+
     public void startSimulation(PositionHandler positionHandler) {
-        isRunning = true; // Met à jour l'état de la simulation
+        if (isRunning) return;
+
+        isRunning = true;
         executor = Executors.newScheduledThreadPool(1);
-        var car = this.race.getCars().getFirst();
-        if (car.getSpeed().norm()==0.0){
-            car.start();
-        }
+
+        race.getCars().forEach(car ->{
+                    if (car.getSpeed().norm() == 0.0) {
+                        car.start();
+                    }
+            try {
+                envoyerCarState(positionHandler,car);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+
+
         executor.scheduleAtFixedRate(() -> {
             if (isRunning) {
                 try {
-                    car.update(Duration.ofMillis(50));
-                    positionHandler.envoyerPosition(car.getPosition().x(), car.getPosition().y());
+                    race.getCars().forEach(car ->{
+                        car.update(Duration.ofMillis(50));
+                        race.updatePoint();
+                        race.checkCars(Duration.ofMillis(50));
+                        envoyerCarState(positionHandler,car);
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }, 0, 50, TimeUnit.MILLISECONDS);
-
-        executor.schedule(() -> {
-            if (isRunning) {
-                car.breakCar(0.1,Duration.ofMillis(50));
-                System.out.println("breaking !");
-                System.out.println(car.getBreaking().getVector());
-            }
-        }, 8, TimeUnit.SECONDS);
     }
 
-
-
+    private void envoyerCarState(PositionHandler positionHandler,Car car) {
+        try {
+            positionHandler.envoyerPosition(
+                    car.getPosition().x(),
+                    car.getPosition().y(),
+                    car.getSpeed().x(),
+                    car.getSpeed().y(),
+                    car.nextPointUnitVector().x(),
+                    car.nextPointUnitVector().y()
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void stopSimulation() {
-        System.out.println("We stop");
-        isRunning = false; // Met à jour l'état de la simulation
+        isRunning = false;
+        if (executor != null) {
+            executor.shutdown();
+        }
     }
 
+    public List<Point> getCircuitPoints(){
+        return RACE().getCircuit().lines().stream().flatMap(line -> Stream.of(line.segment().start(), line.segment().end())).toList();
+    }
+
+    public void resetSimulation(PositionHandler positionHandler) {
+        stopSimulation();
+        resetRace();
+        try {
+            positionHandler.envoyerPosition(race.getCars().getFirst().getPosition().x(), race.getCars().getFirst().getPosition().y(),race.getCars().getFirst().getSpeed().x(),race.getCars().getFirst().getSpeed().y(),race.getCars().getFirst().nextPointUnitVector().x(),race.getCars().getFirst().nextPointUnitVector().y());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
+

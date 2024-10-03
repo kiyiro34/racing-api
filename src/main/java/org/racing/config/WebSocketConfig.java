@@ -23,8 +23,8 @@ public class WebSocketConfig implements WebSocketConfigurer, WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // Autorise toutes les requêtes sur toutes les routes
-                .allowedOrigins("http://localhost:8080") // Remplace par l'origine de ton application
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:8080")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
     }
 

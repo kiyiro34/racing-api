@@ -1,11 +1,17 @@
 package org.racing.controllers;
 
+import org.racing.geometry.Point;
 import org.racing.services.RaceMaintainer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
+@CrossOrigin(origins = "*") // Autorise toutes les origines
 public class SimulationController {
 
     private final RaceMaintainer raceMaintainer;
@@ -17,6 +23,11 @@ public class SimulationController {
 
     @PostMapping("/stopSimulation")
     public void stopSimulation() {
-        raceMaintainer.stopSimulation(); // Appelle la méthode pour arrêter la simulation
+        raceMaintainer.stopSimulation();
+    }
+
+    @GetMapping("/circuitPoint")
+    public List<Point> circuit() {
+        return raceMaintainer.getCircuitPoints();
     }
 }

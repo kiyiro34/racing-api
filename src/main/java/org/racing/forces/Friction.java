@@ -11,7 +11,7 @@ import static org.racing.utilities.Constants.R_ROUE;
 
 public class Friction extends Force{
 
-    public static final double COEFF = 0.01;
+    public static final double COEFF = 0.05;
 
     public Friction(Point origin) {
         super(origin);
