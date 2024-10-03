@@ -37,12 +37,6 @@ public record Circuit(List<Line> lines, CoordinateSystem system) {
                     var vector = Vector.of(car.getPosition(), point);
                     System.out.println(point);
                     double angleCost = cost(car.getSpeed().normalize().heading(vector), car.getPosition().distance(point));
-                    System.out.println(car.getSpeed().normalize());
-                    System.out.println("position");
-                    System.out.println(car.getPosition());
-                    System.out.println(vector);
-                    System.out.println("heading");
-                    System.out.println(car.getSpeed().normalize().heading(vector));
                     return new AbstractMap.SimpleEntry<>(point, angleCost);
                 })
                 .min(Comparator.comparingDouble(Map.Entry::getValue))

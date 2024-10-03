@@ -1,12 +1,12 @@
 package org.racing.controllers;
 
+import org.racing.ModelCar;
 import org.racing.geometry.Point;
 import org.racing.services.RaceMaintainer;
+import org.racing.vehicles.Car;
+import org.racing.vehicles.Motor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +29,12 @@ public class SimulationController {
     @GetMapping("/circuitPoint")
     public List<Point> circuit() {
         return raceMaintainer.getCircuitPoints();
+    }
+
+    @PostMapping("/addCar")
+    public String addCar(@RequestBody ModelCar carData){
+        Car newCar = new Car(carData.brand,new Motor(0,carData.power),carData.mass);
+        raceMaintainer.addCar(newCar);
+        return "Car added";
     }
 }

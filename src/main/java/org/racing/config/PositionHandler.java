@@ -1,14 +1,15 @@
 package org.racing.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.racing.services.RaceMaintainer;
+import org.racing.vehicles.Car;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.*;
 
 public class PositionHandler extends TextWebSocketHandler {
 
@@ -54,12 +55,27 @@ public class PositionHandler extends TextWebSocketHandler {
     }
 
 
-    public void envoyerPosition(double positionX, double positionY, double speedX, double speedY, double nextPointVectorX, double nextPointVectorY) throws Exception {
-        // Formatage du message avec les positions et les vecteurs
-        String message = String.format(
-                "{\"positionX\": %.2f, \"positionY\": %.2f, \"speedX\": %.2f, \"speedY\": %.2f, \"nextPointVectorX\": %.2f, \"nextPointVectorY\": %.2f}",
-                positionX, positionY, speedX, speedY, nextPointVectorX, nextPointVectorY
-        );
+    public void envoyerPositions(Map<String, Car> cars) throws Exception {
+        // Création d'une map JSON pour toutes les voitures
+        Map<String, Object> messageMap = new HashMap<>();
+
+        // Boucler sur chaque voiture dans la map cars et ajouter ses données à la map JSON
+        for (Map.Entry<String, Car> entry : cars.entrySet()) {
+            Car car = entry.getValue();
+            Map<String, Double> carData = new HashMap<>();
+            carData.put("positionX", car.getPosition().x());
+            carData.put("positionY", car.getPosition().y());
+            carData.put("speedX", car.getSpeed().x());
+            carData.put("speedY", car.getSpeed().y());
+            carData.put("nextPointVectorX", car.nextPointUnitVector().x());
+            carData.put("nextPointVectorY", car.nextPointUnitVector().y());
+
+            // Ajouter les données de la voiture à la map principale sous la clé de son modèle
+            messageMap.put(car.getBrand(), carData);
+        }
+
+        // Convertir la map en JSON
+        String message = new ObjectMapper().writeValueAsString(messageMap);
 
         // Envoi aux sessions WebSocket
         synchronized (sessions) {
@@ -70,6 +86,7 @@ public class PositionHandler extends TextWebSocketHandler {
             }
         }
     }
+
 
 }
 
