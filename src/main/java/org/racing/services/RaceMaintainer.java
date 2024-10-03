@@ -13,9 +13,7 @@ import org.racing.vehicles.Motor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -35,7 +33,8 @@ public class RaceMaintainer {
     }
 
     public void resetRace() {
-        this.race = RACE;
+        isRunning = false;
+        this.race = RACE();
     }
 
     public void startSimulation(PositionHandler positionHandler) {
@@ -49,7 +48,7 @@ public class RaceMaintainer {
                         car.start();
                     }
             try {
-                envoyerCarState(positionHandler,car);
+                envoyerCarState(positionHandler);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -64,7 +63,7 @@ public class RaceMaintainer {
                         car.update(Duration.ofMillis(50));
                         race.updatePoint();
                         race.checkCars(Duration.ofMillis(50));
-                        envoyerCarState(positionHandler,car);
+                        envoyerCarState(positionHandler);
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -73,20 +72,22 @@ public class RaceMaintainer {
         }, 0, 50, TimeUnit.MILLISECONDS);
     }
 
-    private void envoyerCarState(PositionHandler positionHandler,Car car) {
+    private void envoyerCarState(PositionHandler positionHandler) {
         try {
-            positionHandler.envoyerPosition(
-                    car.getPosition().x(),
-                    car.getPosition().y(),
-                    car.getSpeed().x(),
-                    car.getSpeed().y(),
-                    car.nextPointUnitVector().x(),
-                    car.nextPointUnitVector().y()
-            );
+            // Créer une map où chaque voiture est stockée avec son modèle comme clé
+            Map<String, Car> carsMap = new HashMap<>();
+
+            for (Car car : race.getCars()) {
+                carsMap.put(car.getBrand(), car);
+            }
+
+            // Envoyer toutes les positions des voitures
+            positionHandler.envoyerPositions(carsMap);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public void stopSimulation() {
         isRunning = false;
         if (executor != null) {
@@ -98,11 +99,23 @@ public class RaceMaintainer {
         return RACE().getCircuit().lines().stream().flatMap(line -> Stream.of(line.segment().start(), line.segment().end())).toList();
     }
 
+    public void addCar(Car car){
+        race.addCar(car);
+    }
+
     public void resetSimulation(PositionHandler positionHandler) {
         stopSimulation();
         resetRace();
-        try {
-            positionHandler.envoyerPosition(race.getCars().getFirst().getPosition().x(), race.getCars().getFirst().getPosition().y(),race.getCars().getFirst().getSpeed().x(),race.getCars().getFirst().getSpeed().y(),race.getCars().getFirst().nextPointUnitVector().x(),race.getCars().getFirst().nextPointUnitVector().y());
+        try{
+            Map<String, Car> carsMap = new HashMap<>();
+
+            for (Car car : race.getCars()) {
+                carsMap.put(car.getBrand(), car);
+            }
+
+            // Envoyer toutes les positions des voitures
+            positionHandler.envoyerPositions(carsMap);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
