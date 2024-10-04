@@ -69,6 +69,9 @@ public class PositionHandler extends TextWebSocketHandler {
             carData.put("speedY", car.getSpeed().y());
             carData.put("nextPointVectorX", car.nextPointUnitVector().x());
             carData.put("nextPointVectorY", car.nextPointUnitVector().y());
+            carData.put("heading",car.getHeading());
+            carData.put("couple",car.getMotor().couple());
+            carData.put("mass",car.getMass());
 
             // Ajouter les données de la voiture à la map principale sous la clé de son modèle
             messageMap.put(car.getBrand(), carData);
@@ -78,6 +81,25 @@ public class PositionHandler extends TextWebSocketHandler {
         String message = new ObjectMapper().writeValueAsString(messageMap);
 
         // Envoi aux sessions WebSocket
+        synchronized (sessions) {
+            for (WebSocketSession session : sessions) {
+                if (session.isOpen()) {
+                    session.sendMessage(new TextMessage(message));
+                }
+            }
+        }
+    }
+
+    public void envoyerTemps(String carBrand, double lapTime) throws Exception {
+        // Créer un message JSON pour le temps de tour
+        Map<String, Object> timeMessage = new HashMap<>();
+        timeMessage.put("carBrand", carBrand);
+        timeMessage.put("lapTime", lapTime);
+
+        // Convertir en JSON
+        String message = new ObjectMapper().writeValueAsString(timeMessage);
+
+        // Envoyer à toutes les sessions WebSocket
         synchronized (sessions) {
             for (WebSocketSession session : sessions) {
                 if (session.isOpen()) {

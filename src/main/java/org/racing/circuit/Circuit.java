@@ -24,6 +24,7 @@ public record Circuit(List<Line> lines, CoordinateSystem system) {
         car.setPosition(system.origin());
         car.updateNextPoint(lines.getFirst().segment().end());
         car.setLastPoint(lines.getFirst().segment().start());
+        car.start();
     }
 
     public void updateNextPoint(List<Car> cars){
@@ -33,9 +34,9 @@ public record Circuit(List<Line> lines, CoordinateSystem system) {
     private void updatePoint(Car car) {
         var bestPoint = lines.stream()
                 .flatMap(line -> Stream.of(line.segment().start(), line.segment().end()))
+                .filter(point->!point.equals(car.getLastPoint()))
                 .map(point -> {
                     var vector = Vector.of(car.getPosition(), point);
-                    System.out.println(point);
                     double angleCost = cost(car.getSpeed().normalize().heading(vector), car.getPosition().distance(point));
                     return new AbstractMap.SimpleEntry<>(point, angleCost);
                 })
@@ -45,6 +46,6 @@ public record Circuit(List<Line> lines, CoordinateSystem system) {
         car.updateNextPoint(bestPoint);
     }
     private double cost(double angle, double distance){
-        return abs(pow(Math.toDegrees(angle),2)*sqrt(distance));
+        return abs(pow(Math.toDegrees(angle),2)+(distance));
     }
 }

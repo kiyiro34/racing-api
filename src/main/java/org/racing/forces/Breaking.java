@@ -13,7 +13,7 @@ import static org.racing.utilities.Constants.R_ROUE;
 public class Breaking extends Force{
 
     private double breakingRatio;
-    private static final double BREAKING_MAX = -40;
+    private static final double BREAKING_MAX = -3;
 
     public Breaking(Point origin) {
         super(origin);

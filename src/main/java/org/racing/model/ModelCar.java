@@ -1,4 +1,4 @@
-package org.racing;
+package org.racing.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
