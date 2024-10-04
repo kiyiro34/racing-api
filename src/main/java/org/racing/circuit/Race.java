@@ -37,7 +37,7 @@ public class Race {
     }
 
     public void addCar(Car car){
-        this.circuit.initCar(car);
+        this.circuit.initOneCar(car);
         this.cars.add(car);
     }
 

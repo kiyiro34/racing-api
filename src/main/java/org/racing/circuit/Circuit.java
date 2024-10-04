@@ -20,10 +20,11 @@ public record Circuit(List<Line> lines, CoordinateSystem system) {
         cars.forEach(car->car.setLastPoint(lines.getFirst().segment().start()));
 
     }
-    public void initCar(Car car){
+    public void initOneCar(Car car){
         car.setPosition(system.origin());
         car.updateNextPoint(lines.getFirst().segment().end());
         car.setLastPoint(lines.getFirst().segment().start());
+        car.getPointList().add(car.getLastPoint());
         car.start();
     }
 

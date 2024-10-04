@@ -62,9 +62,9 @@ public class RaceMaintainer {
                     race.getCars().forEach(car ->{
                         car.update(Duration.ofMillis(50));
                         race.updatePoint();
-                        race.checkCars(Duration.ofMillis(50));
+//                        race.checkCars(Duration.ofMillis(50));
                         try {
-                            checkLapCompletion(positionHandler); // Vérifier si le tour est complété
+                            checkLapCompletion(positionHandler,car); // Vérifier si le tour est complété
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
@@ -77,14 +77,12 @@ public class RaceMaintainer {
         }, 0, 50, TimeUnit.MILLISECONDS);
     }
 
-    private void checkLapCompletion(PositionHandler positionHandler) throws Exception {
-        for (Car car : race.getCars()) {
+    private void checkLapCompletion(PositionHandler positionHandler, Car car) throws Exception {
             if (detectTour(car)) {
                 double lapTime = car.getTime();
                 car.setTime(0);// Récupérer le temps du tour
                 positionHandler.envoyerTemps(car.getBrand(), lapTime); // Envoyer le temps au frontend
             }
-        }
     }
 
     private boolean detectTour(Car car) {
@@ -92,14 +90,14 @@ public class RaceMaintainer {
         Set<Point> uniquePoints = new HashSet<>(points);
 
         // Check if the number of unique points is less than the total points, meaning there are duplicates
-        if (uniquePoints.size() < points.size()) {
+        if (uniquePoints.size() < points.size() && uniquePoints.size()>1) {
             // Reset the point list and lap time
-            car.setPointList(new ArrayList<>());
+            car.setPointList(new ArrayList<>(List.of(car.getLastPoint())));
             return true; // Tour detected due to duplicate points
         }
         boolean result = points.equals(getCircuitPoints());
         if (result) {
-            car.setPointList(new ArrayList<>());
+            car.setPointList(new ArrayList<>(List.of(car.getLastPoint())));
         }
         return result;
     }
