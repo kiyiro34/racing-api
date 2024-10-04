@@ -63,6 +63,11 @@ public class RaceMaintainer {
                         car.update(Duration.ofMillis(50));
                         race.updatePoint();
                         race.checkCars(Duration.ofMillis(50));
+                        try {
+                            checkLapCompletion(positionHandler); // Vérifier si le tour est complété
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                         envoyerCarState(positionHandler);
                     });
                 } catch (Exception e) {
@@ -70,6 +75,33 @@ public class RaceMaintainer {
                 }
             }
         }, 0, 50, TimeUnit.MILLISECONDS);
+    }
+
+    private void checkLapCompletion(PositionHandler positionHandler) throws Exception {
+        for (Car car : race.getCars()) {
+            if (detectTour(car)) {
+                double lapTime = car.getTime();
+                car.setTime(0);// Récupérer le temps du tour
+                positionHandler.envoyerTemps(car.getBrand(), lapTime); // Envoyer le temps au frontend
+            }
+        }
+    }
+
+    private boolean detectTour(Car car) {
+        List<Point> points = car.getPointList();
+        Set<Point> uniquePoints = new HashSet<>(points);
+
+        // Check if the number of unique points is less than the total points, meaning there are duplicates
+        if (uniquePoints.size() < points.size()) {
+            // Reset the point list and lap time
+            car.setPointList(new ArrayList<>());
+            return true; // Tour detected due to duplicate points
+        }
+        boolean result = points.equals(getCircuitPoints());
+        if (result) {
+            car.setPointList(new ArrayList<>());
+        }
+        return result;
     }
 
     private void envoyerCarState(PositionHandler positionHandler) {

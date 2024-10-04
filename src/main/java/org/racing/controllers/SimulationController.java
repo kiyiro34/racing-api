@@ -1,6 +1,6 @@
 package org.racing.controllers;
 
-import org.racing.ModelCar;
+import org.racing.model.ModelCar;
 import org.racing.geometry.Point;
 import org.racing.services.RaceMaintainer;
 import org.racing.vehicles.Car;

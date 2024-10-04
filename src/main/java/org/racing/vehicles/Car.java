@@ -38,6 +38,7 @@ public class Car {
     private Point nexPoint;
     private double wheelsHeading;
     private List<Point> pointList;
+    private double time;
 
     public Car(String brand, Motor motor, double mass) {
         this.brand = brand;
@@ -53,14 +54,15 @@ public class Car {
         this.wheelsHeading = Math.PI/2;
         this.heading = speed.heading();
         this.pointList = new ArrayList<>();
+        this.time=0;
     }
 
     public void updateNextPoint(Point nextPoint){
         if (this.nexPoint!=null && this.nexPoint.equals(nextPoint)  ){
-            if (position.distance(nexPoint)<10){
+            if (position.distance(nexPoint)<30){
                 this.lastPoint = nextPoint;
                 this.pointList.add(nextPoint);
-                breakCar(0.2,Duration.ofMillis(0));
+                breakCar(1,Duration.ofMillis(0));
             }
             else{
                 accelerate(1.0,Duration.ofMillis(50));
@@ -69,14 +71,13 @@ public class Car {
         this.nexPoint = nextPoint;
         this.wheelsHeading = Vector.of(position,nextPoint).heading();
         accelerate(1.0,Duration.ofMillis(50));
-
     }
 
     public void stop(Duration duration){
         this.propulsion = new Propulsion(this);
         this.forces = new ArrayList<>();
         while (speed.dot(nextPointUnitVector())<1){
-            breakCar(0.2,Duration.ofMillis(0));
+            breakCar(1,Duration.ofMillis(0));
             updateForces(duration);
             updateSpeedAndAcceleration(duration);
         }
@@ -88,7 +89,7 @@ public class Car {
         double constantAcceleration = tractionForce/mass;
         // first way to start, take the direction of vehicle
         // initialize the
-        var speed = new Vector(constantAcceleration*STARTING_DURATION.getSeconds()*sin(wheelsHeading),constantAcceleration*STARTING_DURATION.getSeconds()*cos(wheelsHeading));
+        var speed = new Vector(constantAcceleration*STARTING_DURATION.toMillis()*MILLI_TO_SECONDS*sin(wheelsHeading),constantAcceleration*STARTING_DURATION.toMillis()*MILLI_TO_SECONDS*cos(wheelsHeading));
         this.acceleration = new Vector(constantAcceleration*sin(wheelsHeading),constantAcceleration*cos(wheelsHeading));
         this.speed = speed;
         this.position = newPosition(speed,STARTING_DURATION);
@@ -99,6 +100,7 @@ public class Car {
         updateForces(duration);
         updateSpeedAndAcceleration(duration);
         position = newPosition(speed,duration);
+        this.time+=duration.toMillis();
     }
 
 
