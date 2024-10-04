@@ -30,7 +30,7 @@ public class Constants {
         Line line2 = new Line(new Segment(new Point(50,100), new Point(100,100)), 50);
         Line line3 = new Line(new Segment(new Point(200,100), new Point(300,50)), 50);
         Line line4 = new Line(new Segment(new Point(300,20), new Point(280,-100)), 50);
-        Line line5 = new Line(new Segment(new Point(150,-80), new Point(10,-10)), 50);
+        Line line5 = new Line(new Segment(new Point(150,-80), new Point(50,-60)), 50);
 
 
 
