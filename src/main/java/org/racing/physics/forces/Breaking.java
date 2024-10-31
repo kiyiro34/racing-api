@@ -8,11 +8,11 @@ import java.time.Duration;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static org.racing.utilities.ForceConstants.BREAKING_MAX;
 
 public class Breaking extends Force{
 
     private final double breakingRatio;
-    private static final double BREAKING_MAX = -3;
 
     public Breaking(Point origin) {
         super(origin);

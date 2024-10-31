@@ -6,12 +6,10 @@ import org.racing.entities.vehicles.Car;
 
 import java.time.Duration;
 
-import static org.racing.utilities.Constants.G;
+import static org.racing.utilities.ForceConstants.FRICTION_COEFFICIENT;
+import static org.racing.utilities.ForceConstants.G;
 
 public class Friction extends Force{
-
-    public static final double COEFF = 0.05;
-
     public Friction(Point origin) {
         super(origin);
     }
@@ -26,8 +24,8 @@ public class Friction extends Force{
 
     @Override
     public Friction update(Car car, Duration duration) {
-        var frictionX = -COEFF*car.getMass()*G*car.getSpeed().x() /*Replace with heading*/;
-        var frictionY = -COEFF*car.getMass()*G*car.getSpeed().y() /*Replace with heading*/;
+        var frictionX = -FRICTION_COEFFICIENT*car.getMass()*G*car.getSpeed().x() /*Replace with heading*/;
+        var frictionY = -FRICTION_COEFFICIENT*car.getMass()*G*car.getSpeed().y() /*Replace with heading*/;
         return new Friction(car,new Vector(frictionX,frictionY));
     }
 }

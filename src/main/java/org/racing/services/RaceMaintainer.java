@@ -4,6 +4,7 @@ import org.racing.entities.circuit.Race;
 import org.racing.socket.PositionHandler;
 import org.racing.physics.geometry.Point;
 import org.racing.entities.vehicles.Car;
+import org.racing.utilities.Initializer;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -12,8 +13,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
-
-import static org.racing.utilities.Constants.RACE;
 
 @Service
 public class RaceMaintainer {
@@ -28,7 +27,7 @@ public class RaceMaintainer {
 
     public void resetRace() {
         isRunning = false;
-        this.race = RACE();
+        this.race = Initializer.RACE();
     }
 
     public void startSimulation(PositionHandler positionHandler) {
@@ -99,6 +98,10 @@ public class RaceMaintainer {
     }
 
     private void envoyerCarState(PositionHandler positionHandler) {
+        carPositions(positionHandler);
+    }
+
+    private void carPositions(PositionHandler positionHandler) {
         try {
             // Créer une map où chaque voiture est stockée avec son modèle comme clé
             Map<String, Car> carsMap = new HashMap<>();
@@ -122,7 +125,7 @@ public class RaceMaintainer {
     }
 
     public List<Point> getCircuitPoints(){
-        return RACE().getCircuit().lines().stream().flatMap(line -> Stream.of(line.segment().start(), line.segment().end())).toList();
+        return Initializer.RACE().getCircuit().lines().stream().flatMap(line -> Stream.of(line.segment().start(), line.segment().end())).toList();
     }
 
     public void addCar(Car car){
@@ -132,19 +135,7 @@ public class RaceMaintainer {
     public void resetSimulation(PositionHandler positionHandler) {
         stopSimulation();
         resetRace();
-        try{
-            Map<String, Car> carsMap = new HashMap<>();
-
-            for (Car car : race.getCars()) {
-                carsMap.put(car.getBrand(), car);
-            }
-
-            // Envoyer toutes les positions des voitures
-            positionHandler.envoyerPositions(carsMap);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        carPositions(positionHandler);
     }
 }
 
