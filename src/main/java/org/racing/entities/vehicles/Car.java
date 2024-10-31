@@ -1,18 +1,16 @@
-package org.racing.vehicles;
+package org.racing.entities.vehicles;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.racing.forces.Breaking;
-import org.racing.forces.Force;
-import org.racing.forces.Friction;
-import org.racing.forces.Propulsion;
-import org.racing.geometry.Point;
-import org.racing.geometry.Vector;
+import org.racing.physics.forces.Breaking;
+import org.racing.physics.forces.Force;
+import org.racing.physics.forces.Friction;
+import org.racing.physics.forces.Propulsion;
+import org.racing.physics.geometry.Point;
+import org.racing.physics.geometry.Vector;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 

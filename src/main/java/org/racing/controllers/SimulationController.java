@@ -1,10 +1,10 @@
 package org.racing.controllers;
 
-import org.racing.model.ModelCar;
-import org.racing.geometry.Point;
+import org.racing.models.ModelCar;
+import org.racing.physics.geometry.Point;
 import org.racing.services.RaceMaintainer;
-import org.racing.vehicles.Car;
-import org.racing.vehicles.Motor;
+import org.racing.entities.vehicles.Car;
+import org.racing.entities.vehicles.Motor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

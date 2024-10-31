@@ -1,8 +1,8 @@
-package vehicles;
+package entities.vehicles;
 
 import org.junit.jupiter.api.Test;
-import org.racing.vehicles.Car;
-import org.racing.vehicles.Motor;
+import org.racing.entities.vehicles.Car;
+import org.racing.entities.vehicles.Motor;
 
 import java.time.Duration;
 import java.time.Instant;

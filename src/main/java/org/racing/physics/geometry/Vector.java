@@ -1,9 +1,8 @@
-package org.racing.geometry;
+package org.racing.physics.geometry;
 
 import java.util.List;
 
 import static java.lang.Math.acos;
-import static java.lang.Math.atan;
 
 public record Vector(double x, double y) {
 

@@ -1,8 +1,8 @@
-package org.racing.circuit;
+package org.racing.entities.circuit;
 
-import org.racing.geometry.CoordinateSystem;
-import org.racing.geometry.Vector;
-import org.racing.vehicles.Car;
+import org.racing.physics.geometry.CoordinateSystem;
+import org.racing.physics.geometry.Vector;
+import org.racing.entities.vehicles.Car;
 
 import java.util.AbstractMap;
 import java.util.Comparator;

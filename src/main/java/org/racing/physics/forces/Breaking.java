@@ -1,14 +1,13 @@
-package org.racing.forces;
+package org.racing.physics.forces;
 
-import org.racing.geometry.Point;
-import org.racing.geometry.Vector;
-import org.racing.vehicles.Car;
+import org.racing.physics.geometry.Point;
+import org.racing.physics.geometry.Vector;
+import org.racing.entities.vehicles.Car;
 
 import java.time.Duration;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
-import static org.racing.utilities.Constants.R_ROUE;
 
 public class Breaking extends Force{
 

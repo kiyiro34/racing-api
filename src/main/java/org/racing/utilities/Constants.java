@@ -1,14 +1,14 @@
 package org.racing.utilities;
 
-import org.racing.circuit.Circuit;
-import org.racing.circuit.Line;
-import org.racing.circuit.Race;
-import org.racing.geometry.CoordinateSystem;
-import org.racing.geometry.Point;
-import org.racing.geometry.Segment;
-import org.racing.geometry.Vector;
-import org.racing.vehicles.Car;
-import org.racing.vehicles.Motor;
+import org.racing.entities.circuit.Circuit;
+import org.racing.entities.circuit.Line;
+import org.racing.entities.circuit.Race;
+import org.racing.physics.geometry.CoordinateSystem;
+import org.racing.physics.geometry.Point;
+import org.racing.physics.geometry.Segment;
+import org.racing.physics.geometry.Vector;
+import org.racing.entities.vehicles.Car;
+import org.racing.entities.vehicles.Motor;
 
 import java.time.Duration;
 import java.util.ArrayList;

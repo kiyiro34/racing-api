@@ -3,7 +3,7 @@ package org.racing.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.racing.services.RaceMaintainer;
-import org.racing.vehicles.Car;
+import org.racing.entities.vehicles.Car;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketSession;

@@ -1,9 +1,9 @@
-package org.racing.forces;
+package org.racing.physics.forces;
 
 import lombok.ToString;
-import org.racing.geometry.Point;
-import org.racing.geometry.Vector;
-import org.racing.vehicles.Car;
+import org.racing.physics.geometry.Point;
+import org.racing.physics.geometry.Vector;
+import org.racing.entities.vehicles.Car;
 
 import java.time.Duration;
 

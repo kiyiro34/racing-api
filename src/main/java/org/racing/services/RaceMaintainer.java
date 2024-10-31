@@ -1,15 +1,9 @@
 package org.racing.services;
 
-import org.racing.circuit.Circuit;
-import org.racing.circuit.Line;
-import org.racing.circuit.Race;
+import org.racing.entities.circuit.Race;
 import org.racing.config.PositionHandler;
-import org.racing.geometry.CoordinateSystem;
-import org.racing.geometry.Point;
-import org.racing.geometry.Segment;
-import org.racing.geometry.Vector;
-import org.racing.vehicles.Car;
-import org.racing.vehicles.Motor;
+import org.racing.physics.geometry.Point;
+import org.racing.entities.vehicles.Car;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;

@@ -1,8 +1,8 @@
-package org.racing.circuit;
+package org.racing.entities.circuit;
 
 import lombok.Getter;
-import org.racing.geometry.Point;
-import org.racing.vehicles.Car;
+import org.racing.entities.vehicles.Car;
+import org.racing.physics.geometry.Point;
 
 import java.time.Duration;
 import java.time.Instant;

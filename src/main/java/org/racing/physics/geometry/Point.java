@@ -1,4 +1,4 @@
-package org.racing.geometry;
+package org.racing.physics.geometry;
 
 public record Point(double x, double y) {
 
