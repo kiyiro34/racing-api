@@ -14,7 +14,7 @@ import static org.racing.utilities.Constants.R_ROUE;
 @ToString
 public class Propulsion extends Force{
 
-    private double powerRatio;
+    private final double powerRatio;
 
     public Propulsion(Point origin) {
         super(origin);

@@ -12,8 +12,7 @@ public record Point(double x, double y) {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Point) {
-            Point other = (Point) obj;
+        if (obj instanceof Point other) {
             return Double.compare(this.x, other.x) == 0 && Double.compare(this.y, other.y) == 0;
         }
         return false; // Pas un Point, donc pas égal

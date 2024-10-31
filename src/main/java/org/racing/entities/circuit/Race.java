@@ -14,8 +14,8 @@ import static org.racing.utilities.Constants.RACE;
 
 @Getter
 public class Race {
-    private Circuit circuit;
-    private List<Car> cars;
+    private final Circuit circuit;
+    private final List<Car> cars;
     private Instant time;
 
     public Race(List<Car> cars, Circuit circuit){

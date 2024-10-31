@@ -1,7 +1,7 @@
 package org.racing.services;
 
 import org.racing.entities.circuit.Race;
-import org.racing.config.PositionHandler;
+import org.racing.socket.PositionHandler;
 import org.racing.physics.geometry.Point;
 import org.racing.entities.vehicles.Car;
 import org.springframework.stereotype.Service;
@@ -44,6 +44,7 @@ public class RaceMaintainer {
             try {
                 envoyerCarState(positionHandler);
             } catch (Exception e) {
+                //noinspection CallToPrintStackTrace
                 e.printStackTrace();
             }
         });
@@ -65,6 +66,7 @@ public class RaceMaintainer {
                         envoyerCarState(positionHandler);
                     });
                 } catch (Exception e) {
+                    //noinspection CallToPrintStackTrace
                     e.printStackTrace();
                 }
             }

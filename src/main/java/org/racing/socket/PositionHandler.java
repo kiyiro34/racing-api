@@ -1,4 +1,4 @@
-package org.racing.config;
+package org.racing.socket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
@@ -13,27 +13,27 @@ import java.util.*;
 
 public class PositionHandler extends TextWebSocketHandler {
 
-    private RaceMaintainer simulationService;
-    private Set<WebSocketSession> sessions = Collections.synchronizedSet(new HashSet<>());
+    private final RaceMaintainer simulationService;
+    private final Set<WebSocketSession> sessions = Collections.synchronizedSet(new HashSet<>());
 
     public PositionHandler(RaceMaintainer simulationService) {
         this.simulationService = simulationService;
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(WebSocketSession session) {
         sessions.add(session);
         simulationService.startSimulation(this); // Commence la simulation
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         sessions.remove(session);
         simulationService.stopSimulation(); // Arrête la simulation quand une session est fermée
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) {
         String payload = message.getPayload();
         JSONObject json = new JSONObject(payload);
         String action = json.getString("action");

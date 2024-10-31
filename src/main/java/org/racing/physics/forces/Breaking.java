@@ -11,7 +11,7 @@ import static java.lang.Math.sin;
 
 public class Breaking extends Force{
 
-    private double breakingRatio;
+    private final double breakingRatio;
     private static final double BREAKING_MAX = -3;
 
     public Breaking(Point origin) {
