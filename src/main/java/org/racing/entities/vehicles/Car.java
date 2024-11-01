@@ -64,7 +64,7 @@ public class Car {
             if (position.distance(nextPoint)<30){
                 this.lastPoint = nextPoint;
                 this.pointList.add(nextPoint);
-                breaking(1,Duration.ofMillis(0));
+                breaking(1.0,Duration.ofMillis(0));
             }
             else{
                 accelerate(1.0,Duration.ofMillis(50));
@@ -79,7 +79,7 @@ public class Car {
         this.propulsion = new Propulsion(this);
         this.forces = new ArrayList<>();
         while (speed.dot(nextPointUnitVector())<1){
-            breaking(1,Duration.ofMillis(0));
+            breaking(1.0,Duration.ofMillis(0));
             updateForces(duration);
             updateSpeedAndAcceleration(duration);
         }

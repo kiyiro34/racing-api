@@ -37,7 +37,7 @@ public class RaceMaintainer {
         isRunning = true;
         executor = Executors.newScheduledThreadPool(1);
 
-        race.getCars().forEach(car ->{
+        race.cars().forEach(car ->{
                     if (car.getSpeed().norm() == 0.0) {
                         car.start();
                     }
@@ -54,7 +54,7 @@ public class RaceMaintainer {
         executor.scheduleAtFixedRate(() -> {
             if (isRunning) {
                 try {
-                    race.getCars().forEach(car ->{
+                    race.cars().forEach(car ->{
                         car.update(Duration.ofMillis(50));
                         race.updatePoint();
 //                        race.checkCars(Duration.ofMillis(50));
@@ -106,11 +106,11 @@ public class RaceMaintainer {
     private void carPositions(PositionHandler positionHandler) {
         try {
             Map<String, Car> carsMap = new HashMap<>();
-            for (Car car : race.getCars()) {
+            for (Car car : race.cars()) {
                 carsMap.put(car.getBrand(), car);
             }
             // Send all cars positions
-            positionHandler.envoyerPositions(carsMap);
+            positionHandler.sendPositions(carsMap);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -124,7 +124,7 @@ public class RaceMaintainer {
     }
 
     public List<Point> getCircuitPoints(){
-        return Initializer.RACE().getCircuit().lines().stream().flatMap(line -> Stream.of(line.segment().start(), line.segment().end())).toList();
+        return Initializer.RACE().circuit().lines().stream().flatMap(line -> Stream.of(line.segment().start(), line.segment().end())).toList();
     }
 
     public void addCar(Car car){

@@ -6,42 +6,37 @@ import org.racing.models.Circuit;
 import org.racing.physics.geometry.Point;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import static org.racing.utilities.Services.SETTER;
 
 @Getter
-public class Race {
-    private final Circuit circuit;
-    private final List<Car> cars;
-    private Instant time;
-
-    public Race(List<Car> cars, Circuit circuit){
-        this.cars=new ArrayList<>(cars);
+public record Race(List<Car> cars, Circuit circuit) {
+    public Race(List<Car> cars, Circuit circuit) {
+        this.cars = new ArrayList<>(cars);
         this.circuit = circuit;
-        SETTER.initCar(this.circuit,this.cars);
+        SETTER.initCar(this.circuit, this.cars);
     }
 
-    public void updatePoint(){
-        SETTER.updateNextPoint(circuit,cars);
+    public void updatePoint() {
+        SETTER.updateNextPoint(circuit, cars);
     }
 
-    public void checkCars(Duration duration){
-        cars.forEach(car ->{
-            if (points().equals(car.getPointList())){
+    public void checkCars(Duration duration) {
+        cars.forEach(car -> {
+            if (points().equals(car.getPointList())) {
                 car.stop(duration);
             }
         });
     }
 
-    public void addCar(Car car){
-        SETTER.initOneCar(circuit,car);
+    public void addCar(Car car) {
+        SETTER.initOneCar(circuit, car);
         this.cars.add(car);
     }
 
-    private List<Point> points(){
+    private List<Point> points() {
         return circuit.lines().stream().flatMap(line -> Stream.of(line.segment().start(), line.segment().end())).toList();
     }
 
