@@ -22,7 +22,6 @@ public class Initializer {
         Line line4 = new Line(new Segment(new Point(300,20), new Point(280,-100)), 50);
         Line line5 = new Line(new Segment(new Point(150,-80), new Point(50,-60)), 50);
         Circuit circuit = new Circuit(List.of(line,line2,line3,line4,line5), system);
-
         List<Car> carList = new ArrayList<>();
         carList.add(new Car("Loïc", new Motor(0, 10), 1.5));
         return new Race(carList, circuit);

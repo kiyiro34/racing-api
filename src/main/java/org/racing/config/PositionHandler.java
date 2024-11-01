@@ -1,4 +1,4 @@
-package org.racing.socket;
+package org.racing.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
@@ -43,7 +43,7 @@ public class PositionHandler extends TextWebSocketHandler {
                 simulationService.startSimulation(this);
                 break;
             case "reset":
-                simulationService.resetSimulation(this); // Réinitialise la simulation
+                simulationService.reset(this); // Réinitialise la simulation
                 break;
             case "stop":
                 simulationService.stopSimulation(); // Arrête la simulation

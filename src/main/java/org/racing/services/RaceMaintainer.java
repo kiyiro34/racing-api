@@ -1,7 +1,7 @@
 package org.racing.services;
 
 import org.racing.entities.circuit.Race;
-import org.racing.socket.PositionHandler;
+import org.racing.config.PositionHandler;
 import org.racing.physics.geometry.Point;
 import org.racing.entities.vehicles.Car;
 import org.racing.utilities.Initializer;
@@ -14,18 +14,19 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+import static org.racing.utilities.Constants.RACE;
+
 @Service
 public class RaceMaintainer {
-
     private Race race;
     private ScheduledExecutorService executor;
     private boolean isRunning = false;
 
     public RaceMaintainer() {
-        resetRace();
+        this.race = RACE;
     }
 
-    public void resetRace() {
+    private void resetRace() {
         isRunning = false;
         this.race = Initializer.RACE();
     }
@@ -41,7 +42,7 @@ public class RaceMaintainer {
                         car.start();
                     }
             try {
-                envoyerCarState(positionHandler);
+                sendCarState(positionHandler);
             } catch (Exception e) {
                 //noinspection CallToPrintStackTrace
                 e.printStackTrace();
@@ -62,7 +63,7 @@ public class RaceMaintainer {
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
-                        envoyerCarState(positionHandler);
+                        sendCarState(positionHandler);
                     });
                 } catch (Exception e) {
                     //noinspection CallToPrintStackTrace
@@ -75,8 +76,8 @@ public class RaceMaintainer {
     private void checkLapCompletion(PositionHandler positionHandler, Car car) throws Exception {
             if (detectTour(car)) {
                 double lapTime = car.getTime();
-                car.setTime(0);// Récupérer le temps du tour
-                positionHandler.envoyerTemps(car.getBrand(), lapTime); // Envoyer le temps au frontend
+                car.setTime(0);
+                positionHandler.envoyerTemps(car.getBrand(), lapTime);
             }
     }
 
@@ -88,7 +89,8 @@ public class RaceMaintainer {
         if (uniquePoints.size() < points.size() && uniquePoints.size()>1) {
             // Reset the point list and lap time
             car.setPointList(new ArrayList<>(List.of(car.getLastPoint())));
-            return true; // Tour detected due to duplicate points
+            // Tour detected due to duplicate points
+            return true;
         }
         boolean result = points.equals(getCircuitPoints());
         if (result) {
@@ -97,20 +99,17 @@ public class RaceMaintainer {
         return result;
     }
 
-    private void envoyerCarState(PositionHandler positionHandler) {
+    private void sendCarState(PositionHandler positionHandler) {
         carPositions(positionHandler);
     }
 
     private void carPositions(PositionHandler positionHandler) {
         try {
-            // Créer une map où chaque voiture est stockée avec son modèle comme clé
             Map<String, Car> carsMap = new HashMap<>();
-
             for (Car car : race.getCars()) {
                 carsMap.put(car.getBrand(), car);
             }
-
-            // Envoyer toutes les positions des voitures
+            // Send all cars positions
             positionHandler.envoyerPositions(carsMap);
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,7 +131,7 @@ public class RaceMaintainer {
         race.addCar(car);
     }
 
-    public void resetSimulation(PositionHandler positionHandler) {
+    public void reset(PositionHandler positionHandler) {
         stopSimulation();
         resetRace();
         carPositions(positionHandler);
