@@ -2,6 +2,7 @@ package org.racing.entities.circuit;
 
 import lombok.Getter;
 import org.racing.entities.vehicles.Car;
+import org.racing.models.Circuit;
 import org.racing.physics.geometry.Point;
 
 import java.time.Duration;
@@ -9,8 +10,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-
-import static org.racing.utilities.Constants.RACE;
+import static org.racing.utilities.Services.SETTER;
 
 @Getter
 public class Race {
@@ -21,11 +21,11 @@ public class Race {
     public Race(List<Car> cars, Circuit circuit){
         this.cars=new ArrayList<>(cars);
         this.circuit = circuit;
-        this.circuit.initCar(cars);
+        SETTER.initCar(this.circuit,this.cars);
     }
 
     public void updatePoint(){
-        this.circuit.updateNextPoint(cars);
+        SETTER.updateNextPoint(circuit,cars);
     }
 
     public void checkCars(Duration duration){
@@ -37,7 +37,7 @@ public class Race {
     }
 
     public void addCar(Car car){
-        this.circuit.initOneCar(car);
+        SETTER.initOneCar(circuit,car);
         this.cars.add(car);
     }
 

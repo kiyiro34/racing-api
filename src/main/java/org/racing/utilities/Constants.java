@@ -1,18 +1,8 @@
 package org.racing.utilities;
 
-import org.racing.entities.circuit.Circuit;
-import org.racing.entities.circuit.Line;
 import org.racing.entities.circuit.Race;
-import org.racing.physics.geometry.CoordinateSystem;
-import org.racing.physics.geometry.Point;
-import org.racing.physics.geometry.Segment;
-import org.racing.physics.geometry.Vector;
-import org.racing.entities.vehicles.Car;
-import org.racing.entities.vehicles.Motor;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Constants {
 
