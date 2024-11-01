@@ -1,6 +1,6 @@
 package org.racing.utilities;
 
-import org.racing.models.Circuit;
+import org.racing.entities.circuit.Circuit;
 import org.racing.entities.circuit.Race;
 import org.racing.entities.vehicles.Car;
 import org.racing.entities.vehicles.Motor;

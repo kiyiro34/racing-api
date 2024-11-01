@@ -1,6 +1,5 @@
 package org.racing.physics.forces;
 
-import org.racing.physics.geometry.Point;
 import org.racing.physics.geometry.Vector;
 import org.racing.entities.vehicles.Car;
 
@@ -11,13 +10,7 @@ import static java.lang.Math.sin;
 import static org.racing.utilities.ForceConstants.BREAKING_MAX;
 
 public class Breaking extends Force{
-
     private final double breakingRatio;
-
-    public Breaking(Point origin) {
-        super(origin);
-        this.breakingRatio = 0.0;
-    }
 
     public Breaking(Car car){
         super(car);

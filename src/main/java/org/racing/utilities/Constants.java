@@ -11,6 +11,7 @@ public class Constants {
     public static final Duration STARTING_DURATION = Duration.ofMillis(50);
     public static final double MILLI_TO_SECONDS = 1E-3;
     public static final Race RACE = Initializer.RACE();
+    public static final Duration PERIOD = Duration.ofMillis(50);
 
 
 }

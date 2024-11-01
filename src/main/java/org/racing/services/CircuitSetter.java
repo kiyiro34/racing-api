@@ -1,7 +1,7 @@
 package org.racing.services;
 
 import org.racing.entities.circuit.Line;
-import org.racing.models.Circuit;
+import org.racing.entities.circuit.Circuit;
 import org.racing.entities.vehicles.Car;
 import org.racing.physics.geometry.CoordinateSystem;
 import org.racing.physics.geometry.Point;

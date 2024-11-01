@@ -1,10 +1,10 @@
 package org.racing.controllers;
 
-import org.racing.models.ModelCar;
-import org.racing.physics.geometry.Point;
-import org.racing.services.RaceMaintainer;
 import org.racing.entities.vehicles.Car;
 import org.racing.entities.vehicles.Motor;
+import org.racing.models.CarExternal;
+import org.racing.physics.geometry.Point;
+import org.racing.services.RaceMaintainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +33,8 @@ public class SimulationController {
     }
 
     @PostMapping("/car/add")
-    public String addCar(@RequestBody ModelCar carData){
-        Car newCar = new Car(carData.brand,new Motor(0,carData.power),carData.mass);
+    public String addCar(@RequestBody CarExternal carData) {
+        Car newCar = new Car(carData.brand, new Motor(0, carData.power), carData.mass);
         raceMaintainer.addCar(newCar);
         return "Car added";
     }

@@ -6,14 +6,13 @@ import org.racing.physics.geometry.Point;
 import org.racing.entities.vehicles.Car;
 import org.racing.utilities.Initializer;
 import org.springframework.stereotype.Service;
-
-import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+import static org.racing.utilities.Constants.PERIOD;
 import static org.racing.utilities.Constants.RACE;
 
 @Service
@@ -36,7 +35,29 @@ public class RaceMaintainer {
 
         isRunning = true;
         executor = Executors.newScheduledThreadPool(1);
+        start(positionHandler);
+        executor.scheduleAtFixedRate(() -> {
+            if (isRunning) {
+                try {
+                    race.cars().forEach(car ->{
+                        car.update(PERIOD);
+                        race.updatePoint();
+                        try {
+                            // We check if a tour has been completed
+                            checkLapCompletion(positionHandler,car);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                        sendCarState(positionHandler);
+                    });
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, 0, 50, TimeUnit.MILLISECONDS);
+    }
 
+    private void start(PositionHandler positionHandler) {
         race.cars().forEach(car ->{
                     if (car.getSpeed().norm() == 0.0) {
                         car.start();
@@ -44,40 +65,16 @@ public class RaceMaintainer {
             try {
                 sendCarState(positionHandler);
             } catch (Exception e) {
-                //noinspection CallToPrintStackTrace
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         });
-
-
-
-        executor.scheduleAtFixedRate(() -> {
-            if (isRunning) {
-                try {
-                    race.cars().forEach(car ->{
-                        car.update(Duration.ofMillis(50));
-                        race.updatePoint();
-//                        race.checkCars(Duration.ofMillis(50));
-                        try {
-                            checkLapCompletion(positionHandler,car); // Vérifier si le tour est complété
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                        sendCarState(positionHandler);
-                    });
-                } catch (Exception e) {
-                    //noinspection CallToPrintStackTrace
-                    e.printStackTrace();
-                }
-            }
-        }, 0, 50, TimeUnit.MILLISECONDS);
     }
 
     private void checkLapCompletion(PositionHandler positionHandler, Car car) throws Exception {
             if (detectTour(car)) {
                 double lapTime = car.getTime();
                 car.setTime(0);
-                positionHandler.envoyerTemps(car.getBrand(), lapTime);
+                positionHandler.sendTimes(car.getBrand(), lapTime);
             }
     }
 
@@ -100,10 +97,10 @@ public class RaceMaintainer {
     }
 
     private void sendCarState(PositionHandler positionHandler) {
-        carPositions(positionHandler);
+        sendCarPositions(positionHandler);
     }
 
-    private void carPositions(PositionHandler positionHandler) {
+    private void sendCarPositions(PositionHandler positionHandler) {
         try {
             Map<String, Car> carsMap = new HashMap<>();
             for (Car car : race.cars()) {
@@ -112,7 +109,7 @@ public class RaceMaintainer {
             // Send all cars positions
             positionHandler.sendPositions(carsMap);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -124,7 +121,10 @@ public class RaceMaintainer {
     }
 
     public List<Point> getCircuitPoints(){
-        return Initializer.RACE().circuit().lines().stream().flatMap(line -> Stream.of(line.segment().start(), line.segment().end())).toList();
+        return race.circuit().lines()
+                .stream()
+                .flatMap(line -> Stream.of(line.segment().start(), line.segment().end()))
+                .toList();
     }
 
     public void addCar(Car car){
@@ -134,7 +134,7 @@ public class RaceMaintainer {
     public void reset(PositionHandler positionHandler) {
         stopSimulation();
         resetRace();
-        carPositions(positionHandler);
+        sendCarPositions(positionHandler);
     }
 }
 

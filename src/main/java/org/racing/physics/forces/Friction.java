@@ -1,6 +1,5 @@
 package org.racing.physics.forces;
 
-import org.racing.physics.geometry.Point;
 import org.racing.physics.geometry.Vector;
 import org.racing.entities.vehicles.Car;
 
@@ -10,9 +9,6 @@ import static org.racing.utilities.ForceConstants.FRICTION_COEFFICIENT;
 import static org.racing.utilities.ForceConstants.G;
 
 public class Friction extends Force{
-    public Friction(Point origin) {
-        super(origin);
-    }
 
     public Friction(Car car){
         super(car);

@@ -12,6 +12,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.*;
 
+//TODO REFACTOR HANDLER STRUCTURE
 public class PositionHandler extends TextWebSocketHandler {
 
     private final RaceMaintainer simulationService;
@@ -55,7 +56,6 @@ public class PositionHandler extends TextWebSocketHandler {
         }
     }
 
-
     public void sendPositions(Map<String, Car> cars) throws Exception {
         Map<String, Object> messageMap = new HashMap<>();
         for (Map.Entry<String, Car> entry : cars.entrySet()) {
@@ -86,7 +86,7 @@ public class PositionHandler extends TextWebSocketHandler {
         return carData;
     }
 
-    public void envoyerTemps(String carBrand, double lapTime) throws Exception {
+    public void sendTimes(String carBrand, double lapTime) throws Exception {
         Map<String, Object> timeMessage = new HashMap<>();
         timeMessage.put("carBrand", carBrand);
         timeMessage.put("lapTime", lapTime);
