@@ -1,18 +1,16 @@
-package org.racing.vehicles;
+package org.racing.entities.vehicles;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.racing.forces.Breaking;
-import org.racing.forces.Force;
-import org.racing.forces.Friction;
-import org.racing.forces.Propulsion;
-import org.racing.geometry.Point;
-import org.racing.geometry.Vector;
+import org.racing.physics.forces.Breaking;
+import org.racing.physics.forces.Force;
+import org.racing.physics.forces.Friction;
+import org.racing.physics.forces.Propulsion;
+import org.racing.physics.geometry.Point;
+import org.racing.physics.geometry.Vector;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,40 +33,44 @@ public class Car {
     private List<Force> forces;
     private Motor motor;
     private Point lastPoint;
-    private Point nexPoint;
+    private Point nextPoint;
     private double wheelsHeading;
     private List<Point> pointList;
     private double time;
 
-    public Car(String brand, Motor motor, double mass) {
-        this.brand = brand;
-        this.motor = motor;
-        this.mass = mass;
-        this.position = new Point(0,0);
+    public Car() {
+        this.position = new Point(0, 0);
         this.speed = Vector.init();
         this.acceleration = Vector.init();
         this.forces = new ArrayList<>();
         this.forces.add(new Friction(this));
-        this.propulsion = new Propulsion(this);
-        this.breaking = new Breaking(this);
-        this.wheelsHeading = Math.PI/2;
-        this.heading = speed.heading();
+        this.wheelsHeading = Math.PI / 2;
         this.pointList = new ArrayList<>();
-        this.time=0;
+        this.time = 0;
     }
 
+    public Car(String brand, Motor motor, double mass) {
+        this();
+        this.brand = brand;
+        this.motor = motor;
+        this.mass = mass;
+        this.heading = speed.heading();
+        this.propulsion = new Propulsion(this);
+        this.breaking = new Breaking(this);
+    }
+    
     public void updateNextPoint(Point nextPoint){
-        if (this.nexPoint!=null && this.nexPoint.equals(nextPoint)  ){
-            if (position.distance(nexPoint)<30){
+        if (this.nextPoint!=null && this.nextPoint.equals(nextPoint)  ){
+            if (position.distance(nextPoint)<30){
                 this.lastPoint = nextPoint;
                 this.pointList.add(nextPoint);
-                breakCar(1,Duration.ofMillis(0));
+                breaking(1.0,Duration.ofMillis(0));
             }
             else{
                 accelerate(1.0,Duration.ofMillis(50));
             }
         }
-        this.nexPoint = nextPoint;
+        this.nextPoint = nextPoint;
         this.wheelsHeading = Vector.of(position,nextPoint).heading();
         accelerate(1.0,Duration.ofMillis(50));
     }
@@ -77,7 +79,7 @@ public class Car {
         this.propulsion = new Propulsion(this);
         this.forces = new ArrayList<>();
         while (speed.dot(nextPointUnitVector())<1){
-            breakCar(1,Duration.ofMillis(0));
+            breaking(1.0,Duration.ofMillis(0));
             updateForces(duration);
             updateSpeedAndAcceleration(duration);
         }
@@ -88,10 +90,15 @@ public class Car {
         double tractionForce = motor.couple()*R_ROUE/R_TRANSMISSION;
         double constantAcceleration = tractionForce/mass;
         // first way to start, take the direction of vehicle
-        // initialize the
-        var speed = new Vector(constantAcceleration*STARTING_DURATION.toMillis()*MILLI_TO_SECONDS*sin(wheelsHeading),constantAcceleration*STARTING_DURATION.toMillis()*MILLI_TO_SECONDS*cos(wheelsHeading));
-        this.acceleration = new Vector(constantAcceleration*sin(wheelsHeading),constantAcceleration*cos(wheelsHeading));
-        this.speed = speed;
+        // initialize the different speed and acceleration
+        this.acceleration = new Vector(
+                constantAcceleration*sin(wheelsHeading),
+                constantAcceleration*cos(wheelsHeading)
+        );
+        this.speed =  new Vector(
+                constantAcceleration*STARTING_DURATION.toMillis()*MILLI_TO_SECONDS*sin(wheelsHeading),
+                constantAcceleration*STARTING_DURATION.toMillis()*MILLI_TO_SECONDS*cos(wheelsHeading)
+        );
         this.position = newPosition(speed,STARTING_DURATION);
         accelerate(1.0,Duration.ofMillis(50));
     }
@@ -104,19 +111,18 @@ public class Car {
     }
 
 
-    public void breakCar(double ratio, Duration duration){
+    private void breaking(double ratio, Duration duration){
         propulsion = new Propulsion(this);
         breaking = new Breaking(this,Vector.init(),ratio).update(this,duration);
-//        updateSpeedAndAcceleration(duration);
     }
 
-    public void accelerate(double ratio, Duration duration){
+    private void accelerate(double ratio, Duration duration){
         propulsion = new Propulsion(this,Vector.init(),ratio).update(this,duration);
     }
 
 
     public Vector nextPointUnitVector(){
-        return Vector.of(position,nexPoint).normalize();
+        return Vector.of(position,nextPoint).normalize();
     }
 
     private void updateSpeedAndAcceleration(Duration duration){

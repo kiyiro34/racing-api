@@ -1,4 +1,4 @@
-package org.racing.vehicles;
+package org.racing.entities.vehicles;
 
 public record Motor(double power, double couple) {
 
