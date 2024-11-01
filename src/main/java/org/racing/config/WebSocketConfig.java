@@ -2,7 +2,6 @@ package org.racing.config;
 
 
 import org.racing.services.RaceMaintainer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -14,7 +13,6 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer, WebMvcConfigurer {
 
-    @Autowired
     private final RaceMaintainer simulationService;
 
     public WebSocketConfig(RaceMaintainer simulationService) {

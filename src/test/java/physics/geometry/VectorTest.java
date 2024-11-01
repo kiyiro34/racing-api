@@ -1,7 +1,7 @@
-package geometry;
+package physics.geometry;
 
 import org.junit.jupiter.api.Test;
-import org.racing.geometry.Vector;
+import org.racing.physics.geometry.Vector;
 
 public class VectorTest {
 
