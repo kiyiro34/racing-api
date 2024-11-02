@@ -46,7 +46,7 @@ public class PositionHandler extends TextWebSocketHandler {
                 simulationService.startSimulation(this);
                 break;
             case "reset":
-                simulationService.reset(this);
+                simulationService.reset();
                 break;
             case "stop":
                 simulationService.stopSimulation();
