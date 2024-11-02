@@ -1,4 +1,4 @@
-package entities.vehicles;
+package org.racing.entities.vehicles;
 
 import org.junit.jupiter.api.Test;
 import org.racing.entities.vehicles.Car;

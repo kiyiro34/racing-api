@@ -126,10 +126,10 @@ public class RaceMaintainer {
         race.addCar(car);
     }
 
-    public void reset(PositionHandler positionHandler) {
+    public void reset() {
         stopSimulation();
         resetRace();
-        sendCarPositions(positionHandler);
+        //sendCarPositions(positionHandler);
     }
 }
 
