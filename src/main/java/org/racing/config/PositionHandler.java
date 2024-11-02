@@ -1,7 +1,6 @@
 package org.racing.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
 import org.racing.models.CarData;
 import org.racing.models.TimeData;
 import org.racing.services.RaceMaintainer;
@@ -35,27 +34,7 @@ public class PositionHandler extends TextWebSocketHandler {
         simulationService.stopSimulation();
     }
 
-    @Override
-    protected void handleTextMessage(@NonNull WebSocketSession session, TextMessage message) {
-        String payload = message.getPayload();
-        JSONObject json = new JSONObject(payload);
-        String action = json.getString("action");
 
-        switch (action) {
-            case "start":
-                simulationService.startSimulation(this);
-                break;
-            case "reset":
-                simulationService.reset();
-                break;
-            case "stop":
-                simulationService.stopSimulation();
-                break;
-            default:
-                System.out.println("Not recognized: " + action);
-                break;
-        }
-    }
 
     public void sendPositions(Map<String, Car> cars) throws Exception {
         Map<String, CarData> messageMap = new HashMap<>();
