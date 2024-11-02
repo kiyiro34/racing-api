@@ -7,11 +7,11 @@
     <groupId>org.racing</groupId>
     <artifactId>racing-api</artifactId>
     <version>1.0</version>
-    <packaging>jar</packaging> <!-- Définir le type de paquet comme jar -->
+    <packaging>jar</packaging>
 
     <properties>
         <java.version>21</java.version>
-        <spring.boot.version>3.3.4</spring.boot.version> <!-- Version Spring Boot centralisée -->
+        <spring.boot.version>3.3.4</spring.boot.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.9.0</version> <!-- Mettez à jour à une version spécifique de JUnit 5 -->
+            <version>5.9.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
