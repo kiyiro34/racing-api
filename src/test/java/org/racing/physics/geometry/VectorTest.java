@@ -1,4 +1,4 @@
-package physics.geometry;
+package org.racing.physics.geometry;
 
 import org.junit.jupiter.api.Test;
 import org.racing.physics.geometry.Vector;
