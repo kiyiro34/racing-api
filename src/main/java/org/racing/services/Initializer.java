@@ -1,4 +1,4 @@
-package org.racing.utilities;
+package org.racing.services;
 
 import org.racing.entities.circuit.Circuit;
 import org.racing.entities.circuit.Race;
