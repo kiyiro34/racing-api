@@ -2,6 +2,7 @@ package org.racing.config;
 
 
 import org.racing.services.RaceMaintainer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -15,6 +16,9 @@ public class WebSocketConfig implements WebSocketConfigurer, WebMvcConfigurer {
 
     private final RaceMaintainer simulationService;
 
+    @Value("${cors.allowed.origin}")
+    private String corsAllowedOrigin;
+
     public WebSocketConfig(RaceMaintainer simulationService) {
         this.simulationService = simulationService;
     }
@@ -22,7 +26,7 @@ public class WebSocketConfig implements WebSocketConfigurer, WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8080")
+                .allowedOrigins(corsAllowedOrigin)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
     }
 
