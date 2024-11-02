@@ -4,13 +4,11 @@ import org.racing.entities.circuit.Race;
 import org.racing.config.PositionHandler;
 import org.racing.physics.geometry.Point;
 import org.racing.entities.vehicles.Car;
-import org.racing.utilities.Initializer;
 import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 
 import static org.racing.utilities.Constants.PERIOD;
 import static org.racing.utilities.Constants.RACE;

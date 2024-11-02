@@ -1,6 +1,7 @@
 package org.racing.utilities;
 
 import org.racing.entities.circuit.Race;
+import org.racing.services.Initializer;
 
 import java.time.Duration;
 
