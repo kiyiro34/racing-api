@@ -64,26 +64,15 @@ public class Car {
             if (position.distance(nextPoint)<30){
                 this.lastPoint = nextPoint;
                 this.pointList.add(nextPoint);
-                breaking(1.0,Duration.ofMillis(0));
+                breaking(BREAKING_RATIO,Duration.ofMillis(0));
             }
             else{
-                accelerate(1.0,Duration.ofMillis(50));
+                accelerate(ACCELERATION_RATIO,Duration.ofMillis(50));
             }
         }
         this.nextPoint = nextPoint;
         this.wheelsHeading = Vector.of(position,nextPoint).heading();
-        accelerate(1.0,Duration.ofMillis(50));
-    }
-
-    public void stop(Duration duration){
-        this.propulsion = new Propulsion(this);
-        this.forces = new ArrayList<>();
-        while (speed.dot(nextPointUnitVector())<1){
-            breaking(1.0,Duration.ofMillis(0));
-            updateForces(duration);
-            updateSpeedAndAcceleration(duration);
-        }
-        this.breaking =new Breaking(this);
+        accelerate(ACCELERATION_RATIO,Duration.ofMillis(50));
     }
 
     public void start(){
@@ -110,6 +99,10 @@ public class Car {
         this.time+=duration.toMillis();
     }
 
+    public Vector nextPointUnitVector(){
+        return Vector.of(position,nextPoint).normalize();
+    }
+
 
     private void breaking(double ratio, Duration duration){
         propulsion = new Propulsion(this);
@@ -118,11 +111,6 @@ public class Car {
 
     private void accelerate(double ratio, Duration duration){
         propulsion = new Propulsion(this,Vector.init(),ratio).update(this,duration);
-    }
-
-
-    public Vector nextPointUnitVector(){
-        return Vector.of(position,nextPoint).normalize();
     }
 
     private void updateSpeedAndAcceleration(Duration duration){

@@ -1,5 +1,3 @@
 package org.racing.entities.vehicles;
 
-public record Motor(double power, double couple) {
-
-}
+public record Motor(double power, double couple) {}

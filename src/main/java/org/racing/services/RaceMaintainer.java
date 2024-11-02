@@ -121,10 +121,7 @@ public class RaceMaintainer {
     }
 
     public List<Point> getCircuitPoints(){
-        return race.circuit().lines()
-                .stream()
-                .flatMap(line -> Stream.of(line.segment().start(), line.segment().end()))
-                .toList();
+        return race.points();
     }
 
     public void addCar(Car car){

@@ -25,7 +25,7 @@ public record Race(List<Car> cars, Circuit circuit) {
         this.cars.add(car);
     }
 
-    private List<Point> points() {
+    public List<Point> points() {
         return circuit.lines().stream().flatMap(line -> Stream.of(line.segment().start(), line.segment().end())).toList();
     }
 
