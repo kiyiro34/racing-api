@@ -26,6 +26,11 @@ public class SimulationController {
         raceMaintainer.stopSimulation();
     }
 
+    @PostMapping("/simulation/reset")
+    public void resetSimulation() {
+        raceMaintainer.reset();
+    }
+
     @GetMapping("/circuit/points")
     public List<Point> circuit() {
         return raceMaintainer.getCircuitPoints();
