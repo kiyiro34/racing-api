@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 //Allows all the origins for the moment
-@CrossOrigin(origins = "*")
 public class SimulationController {
 
     private final RaceMaintainer raceMaintainer;
