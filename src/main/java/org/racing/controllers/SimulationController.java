@@ -37,9 +37,8 @@ public class SimulationController {
     }
 
     @PostMapping("/car/add")
-    public String addCar(@RequestBody CarExternal carData) {
+    public void addCar(@RequestBody CarExternal carData) {
         Car newCar = new Car(carData.brand, new Motor(0, carData.power), carData.mass);
         raceMaintainer.addCar(newCar);
-        return "Car added";
     }
 }

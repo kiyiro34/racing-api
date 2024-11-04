@@ -29,7 +29,6 @@ public class WebSocketConfig implements WebSocketConfigurer, WebMvcConfigurer {
     @PostConstruct
     public void init() {
         this.corsAllowedOrigin = "http://localhost:" + interfacePort;
-        System.out.println("CORS allowed origin: " + corsAllowedOrigin);
     }
 
     @Override
