@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.racing.physics.geometry.Point;
 import org.racing.physics.geometry.Vector;
-import org.racing.entities.vehicles.Car;
+import org.racing.entities.vehicles.Drone;
 
 import java.time.Duration;
 
@@ -19,16 +19,16 @@ public abstract class Force {
         this.vector = Vector.init();
     }
 
-    public Force(Car car){
+    public Force(Drone drone){
         this.vector = Vector.init();
-        this.origin = car.getPosition();
+        this.origin = drone.getPosition();
     }
 
-    public Force(Car car,Vector vector){
+    public Force(Drone drone, Vector vector){
         this.vector = vector;
-        this.origin = car.getPosition();
+        this.origin = drone.getPosition();
     }
 
-    public abstract Force update(Car car, Duration duration);
+    public abstract Force update(Drone drone, Duration duration);
 
 }

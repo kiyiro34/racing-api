@@ -8,13 +8,13 @@ import lombok.Getter;
 @Builder(toBuilder = true)
 public class TimeData {
     @JsonProperty("carBrand")
-    private final String carBrand;
+    private final String droneBrand;
 
     @JsonProperty("lapTime")
     private final double lapTime;
 
-    public TimeData(String carBrand, double lapTime) {
-        this.carBrand = carBrand;
+    public TimeData(String droneBrand, double lapTime) {
+        this.droneBrand = droneBrand;
         this.lapTime = lapTime;
     }
 }

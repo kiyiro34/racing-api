@@ -21,7 +21,7 @@ import static org.racing.utilities.Constants.*;
 @Setter
 @ToString
 @Getter
-public class Car {
+public class Drone {
     private String brand;
     private double mass;
     private Point position;
@@ -38,7 +38,7 @@ public class Car {
     private List<Point> pointList;
     private double time;
 
-    public Car() {
+    public Drone() {
         this.position = new Point(0, 0);
         this.speed = Vector.init();
         this.acceleration = Vector.init();
@@ -49,7 +49,7 @@ public class Car {
         this.time = 0;
     }
 
-    public Car(String brand, Motor motor, double mass) {
+    public Drone(String brand, Motor motor, double mass) {
         this();
         this.brand = brand;
         this.motor = motor;

@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.racing.entities.vehicles.Car;
+import org.racing.entities.vehicles.Drone;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @AllArgsConstructor
-public class CarData {
+public class DroneData {
     @JsonProperty("positionX")
     private final double positionX;
 
@@ -37,16 +37,16 @@ public class CarData {
     @JsonProperty("mass")
     private final double mass;
 
-    public CarData(Car car) {
-        this.positionX = car.getPosition().x();
-        this.positionY = car.getPosition().y();
-        this.speedX = car.getSpeed().x();
-        this.speedY = car.getSpeed().y();
-        this.nextPointVectorX = car.nextPointUnitVector().x();
-        this.nextPointVectorY = car.nextPointUnitVector().y();
-        this.heading = car.getHeading();
-        this.couple = car.getMotor().couple();
-        this.mass = car.getMass();
+    public DroneData(Drone drone) {
+        this.positionX = drone.getPosition().x();
+        this.positionY = drone.getPosition().y();
+        this.speedX = drone.getSpeed().x();
+        this.speedY = drone.getSpeed().y();
+        this.nextPointVectorX = drone.nextPointUnitVector().x();
+        this.nextPointVectorY = drone.nextPointUnitVector().y();
+        this.heading = drone.getHeading();
+        this.couple = drone.getMotor().couple();
+        this.mass = drone.getMass();
     }
 }
 

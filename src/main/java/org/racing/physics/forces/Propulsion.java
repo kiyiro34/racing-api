@@ -1,9 +1,8 @@
 package org.racing.physics.forces;
 
 import lombok.ToString;
-import org.racing.physics.geometry.Point;
 import org.racing.physics.geometry.Vector;
-import org.racing.entities.vehicles.Car;
+import org.racing.entities.vehicles.Drone;
 
 import java.time.Duration;
 
@@ -15,22 +14,22 @@ import static org.racing.utilities.Constants.R_ROUE;
 public class Propulsion extends Force{
     private final double powerRatio;
 
-    public Propulsion(Car car){
-        super(car);
+    public Propulsion(Drone drone){
+        super(drone);
         this.powerRatio = 0.0;
     }
 
-    public Propulsion(Car car,Vector vector,double powerRatio){
-        super(car,vector);
+    public Propulsion(Drone drone, Vector vector, double powerRatio){
+        super(drone,vector);
         this.powerRatio = powerRatio;
     }
 
     @Override
-    public Propulsion update(Car car, Duration duration) {
-        if (car.getSpeed().norm()==0) return new Propulsion(car);
-        var power = car.getMotor().couple()*powerRatio/R_ROUE;
-        var powerX = power * sin(car.getWheelsHeading()) /*Replace with heading*/;
-        var powerY = power * cos(car.getWheelsHeading());
-        return new Propulsion(car,new Vector(powerX,powerY),powerRatio);
+    public Propulsion update(Drone drone, Duration duration) {
+        if (drone.getSpeed().norm()==0) return new Propulsion(drone);
+        var power = drone.getMotor().couple()*powerRatio/R_ROUE;
+        var powerX = power * sin(drone.getWheelsHeading()) /*Replace with heading*/;
+        var powerY = power * cos(drone.getWheelsHeading());
+        return new Propulsion(drone,new Vector(powerX,powerY),powerRatio);
     }
 }

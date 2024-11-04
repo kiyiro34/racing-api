@@ -2,7 +2,7 @@ package org.racing.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CarExternal {
+public class DroneExternal {
 
     @JsonProperty(value = "brand")
     public String brand;

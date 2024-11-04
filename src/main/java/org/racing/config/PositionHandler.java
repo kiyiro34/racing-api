@@ -1,10 +1,10 @@
 package org.racing.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.racing.models.CarData;
+import org.racing.models.DroneData;
 import org.racing.models.TimeData;
 import org.racing.services.RaceMaintainer;
-import org.racing.entities.vehicles.Car;
+import org.racing.entities.vehicles.Drone;
 import org.springframework.lang.NonNull;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.CloseStatus;
@@ -36,11 +36,11 @@ public class PositionHandler extends TextWebSocketHandler {
 
 
 
-    public void sendPositions(Map<String, Car> cars) throws Exception {
-        Map<String, CarData> messageMap = new HashMap<>();
-        for (Map.Entry<String, Car> entry : cars.entrySet()) {
-            Car car = entry.getValue();
-            messageMap.put(car.getBrand(), new CarData(car));
+    public void sendPositions(Map<String, Drone> drones) throws Exception {
+        Map<String, DroneData> messageMap = new HashMap<>();
+        for (Map.Entry<String, Drone> entry : drones.entrySet()) {
+            Drone drone = entry.getValue();
+            messageMap.put(drone.getBrand(), new DroneData(drone));
         }
         String message = new ObjectMapper().writeValueAsString(messageMap);
         synchronized (sessions) {
@@ -52,9 +52,9 @@ public class PositionHandler extends TextWebSocketHandler {
         }
     }
 
-    public void sendTimes(String carBrand, double lapTime) throws Exception {
+    public void sendTimes(String droneBrand, double lapTime) throws Exception {
         //TODO Create a model
-        var timeMessage = new TimeData(carBrand,lapTime);
+        var timeMessage = new TimeData(droneBrand,lapTime);
         String message = new ObjectMapper().writeValueAsString(timeMessage);
         synchronized (sessions) {
             for (WebSocketSession session : sessions) {

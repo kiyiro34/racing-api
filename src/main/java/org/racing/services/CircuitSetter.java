@@ -2,7 +2,7 @@ package org.racing.services;
 
 import org.racing.entities.circuit.Line;
 import org.racing.entities.circuit.Circuit;
-import org.racing.entities.vehicles.Car;
+import org.racing.entities.vehicles.Drone;
 import org.racing.physics.geometry.CoordinateSystem;
 import org.racing.physics.geometry.Point;
 import org.racing.physics.geometry.Segment;
@@ -29,37 +29,37 @@ public class CircuitSetter {
         return new Circuit(lines,system);
     }
 
-    public void initCar(Circuit circuit, List<Car> cars){
-        cars.forEach(car->car.setPosition(circuit.system().origin()));
-        cars.forEach(car->car.updateNextPoint(circuit.lines().getFirst().segment().end()));
-        cars.forEach(car->car.setLastPoint(circuit.lines().getFirst().segment().start()));
+    public void initCar(Circuit circuit, List<Drone> drones){
+        drones.forEach(car->car.setPosition(circuit.system().origin()));
+        drones.forEach(car->car.updateNextPoint(circuit.lines().getFirst().segment().end()));
+        drones.forEach(car->car.setLastPoint(circuit.lines().getFirst().segment().start()));
 
     }
-    public void initOneCar(Circuit circuit,Car car){
-        car.setPosition(circuit.system().origin());
-        car.updateNextPoint(circuit.lines().getFirst().segment().end());
-        car.setLastPoint(circuit.lines().getFirst().segment().start());
-        car.getPointList().add(car.getLastPoint());
-        car.start();
+    public void initOneCar(Circuit circuit, Drone drone){
+        drone.setPosition(circuit.system().origin());
+        drone.updateNextPoint(circuit.lines().getFirst().segment().end());
+        drone.setLastPoint(circuit.lines().getFirst().segment().start());
+        drone.getPointList().add(drone.getLastPoint());
+        drone.start();
     }
 
-    public void updateNextPoint(Circuit circuit,List<Car> cars){
-        cars.forEach(car -> updatePoint(circuit,car));
+    public void updateNextPoint(Circuit circuit,List<Drone> drones){
+        drones.forEach(car -> updatePoint(circuit,car));
     }
 
-    private void updatePoint(Circuit circuit,Car car) {
+    private void updatePoint(Circuit circuit, Drone drone) {
         var bestPoint = circuit.lines().stream()
                 .flatMap(line -> Stream.of(line.segment().start(), line.segment().end()))
-                .filter(point->!point.equals(car.getLastPoint()))
+                .filter(point->!point.equals(drone.getLastPoint()))
                 .map(point -> {
-                    var vector = Vector.of(car.getPosition(), point);
-                    double angleCost = cost(car.getSpeed().normalize().heading(vector), car.getPosition().distance(point));
+                    var vector = Vector.of(drone.getPosition(), point);
+                    double angleCost = cost(drone.getSpeed().normalize().heading(vector), drone.getPosition().distance(point));
                     return new AbstractMap.SimpleEntry<>(point, angleCost);
                 })
                 .min(Comparator.comparingDouble(Map.Entry::getValue))
                 .get()
                 .getKey();
-        car.updateNextPoint(bestPoint);
+        drone.updateNextPoint(bestPoint);
     }
     private double cost(double angle, double distance){
         return abs(pow(Math.toDegrees(angle),2)+(distance));

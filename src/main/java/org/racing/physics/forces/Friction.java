@@ -1,7 +1,7 @@
 package org.racing.physics.forces;
 
 import org.racing.physics.geometry.Vector;
-import org.racing.entities.vehicles.Car;
+import org.racing.entities.vehicles.Drone;
 
 import java.time.Duration;
 
@@ -10,18 +10,18 @@ import static org.racing.utilities.ForceConstants.G;
 
 public class Friction extends Force{
 
-    public Friction(Car car){
-        super(car);
+    public Friction(Drone drone){
+        super(drone);
     }
 
-    public Friction(Car car, Vector vector){
-        super(car,vector);
+    public Friction(Drone drone, Vector vector){
+        super(drone,vector);
     }
 
     @Override
-    public Friction update(Car car, Duration duration) {
-        var frictionX = -FRICTION_COEFFICIENT*car.getMass()*G*car.getSpeed().x() /*Replace with heading*/;
-        var frictionY = -FRICTION_COEFFICIENT*car.getMass()*G*car.getSpeed().y() /*Replace with heading*/;
-        return new Friction(car,new Vector(frictionX,frictionY));
+    public Friction update(Drone drone, Duration duration) {
+        var frictionX = -FRICTION_COEFFICIENT* drone.getMass()*G* drone.getSpeed().x() /*Replace with heading*/;
+        var frictionY = -FRICTION_COEFFICIENT* drone.getMass()*G* drone.getSpeed().y() /*Replace with heading*/;
+        return new Friction(drone,new Vector(frictionX,frictionY));
     }
 }

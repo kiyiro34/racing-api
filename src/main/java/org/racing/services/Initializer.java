@@ -2,7 +2,7 @@ package org.racing.services;
 
 import org.racing.entities.circuit.Circuit;
 import org.racing.entities.circuit.Race;
-import org.racing.entities.vehicles.Car;
+import org.racing.entities.vehicles.Drone;
 import org.racing.entities.vehicles.Motor;
 import org.racing.physics.geometry.Point;
 
@@ -26,8 +26,8 @@ public class Initializer {
                 new Point(50, -60)
         );
         Circuit circuit = SETTER.of(points);
-        List<Car> carList = new ArrayList<>();
-        carList.add(new Car("Loïc", new Motor(0, 10), 1.5));
-        return new Race(carList, circuit);
+        List<Drone> droneList = new ArrayList<>();
+        droneList.add(new Drone("Loïc", new Motor(0, 10), 1.5));
+        return new Race(droneList, circuit);
     }
 }

@@ -1,8 +1,8 @@
 package org.racing.controllers;
 
-import org.racing.entities.vehicles.Car;
+import org.racing.entities.vehicles.Drone;
 import org.racing.entities.vehicles.Motor;
-import org.racing.models.CarExternal;
+import org.racing.models.DroneExternal;
 import org.racing.physics.geometry.Point;
 import org.racing.services.RaceMaintainer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +36,9 @@ public class SimulationController {
         return raceMaintainer.getCircuitPoints();
     }
 
-    @PostMapping("/car/add")
-    public void addCar(@RequestBody CarExternal carData) {
-        Car newCar = new Car(carData.brand, new Motor(0, carData.power), carData.mass);
-        raceMaintainer.addCar(newCar);
+    @PostMapping("/drone/add")
+    public void addCar(@RequestBody DroneExternal droneData) {
+        Drone newDrone = new Drone(droneData.brand, new Motor(0, droneData.power), droneData.mass);
+        raceMaintainer.addCar(newDrone);
     }
 }

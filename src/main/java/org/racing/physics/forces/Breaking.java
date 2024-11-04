@@ -1,7 +1,7 @@
 package org.racing.physics.forces;
 
 import org.racing.physics.geometry.Vector;
-import org.racing.entities.vehicles.Car;
+import org.racing.entities.vehicles.Drone;
 
 import java.time.Duration;
 
@@ -12,20 +12,20 @@ import static org.racing.utilities.ForceConstants.BREAKING_MAX;
 public class Breaking extends Force{
     private final double breakingRatio;
 
-    public Breaking(Car car){
-        super(car);
+    public Breaking(Drone drone){
+        super(drone);
         this.breakingRatio = 0.0;
     }
 
-    public Breaking(Car car, Vector vector, double breakingRatio){
-        super(car,vector);
+    public Breaking(Drone drone, Vector vector, double breakingRatio){
+        super(drone,vector);
         this.breakingRatio = breakingRatio;
     }
 
     @Override
-    public Breaking update(Car car, Duration duration) {
-        var breakingX = car.getMass()*breakingRatio*BREAKING_MAX* sin(car.getWheelsHeading());
-        var breakingY = car.getMass()*breakingRatio*BREAKING_MAX* cos(car.getWheelsHeading());
-        return new Breaking(car,new Vector(breakingX,breakingY),breakingRatio);
+    public Breaking update(Drone drone, Duration duration) {
+        var breakingX = drone.getMass()*breakingRatio*BREAKING_MAX* sin(drone.getWheelsHeading());
+        var breakingY = drone.getMass()*breakingRatio*BREAKING_MAX* cos(drone.getWheelsHeading());
+        return new Breaking(drone,new Vector(breakingX,breakingY),breakingRatio);
     }
 }

@@ -3,7 +3,7 @@ package org.racing.services;
 import org.racing.entities.circuit.Race;
 import org.racing.config.PositionHandler;
 import org.racing.physics.geometry.Point;
-import org.racing.entities.vehicles.Car;
+import org.racing.entities.vehicles.Drone;
 import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -37,7 +37,7 @@ public class RaceMaintainer {
         executor.scheduleAtFixedRate(() -> {
             if (isRunning) {
                 try {
-                    race.cars().forEach(car ->{
+                    race.drones().forEach(car ->{
                         car.update(PERIOD);
                         race.updatePoint();
                         try {
@@ -56,7 +56,7 @@ public class RaceMaintainer {
     }
 
     private void start(PositionHandler positionHandler) {
-        race.cars().forEach(car ->{
+        race.drones().forEach(car ->{
                     if (car.getSpeed().norm() == 0.0) {
                         car.start();
                     }
@@ -68,28 +68,28 @@ public class RaceMaintainer {
         });
     }
 
-    private void checkLapCompletion(PositionHandler positionHandler, Car car) throws Exception {
-            if (detectTour(car)) {
-                double lapTime = car.getTime();
-                car.setTime(0);
-                positionHandler.sendTimes(car.getBrand(), lapTime);
+    private void checkLapCompletion(PositionHandler positionHandler, Drone drone) throws Exception {
+            if (detectTour(drone)) {
+                double lapTime = drone.getTime();
+                drone.setTime(0);
+                positionHandler.sendTimes(drone.getBrand(), lapTime);
             }
     }
 
-    private boolean detectTour(Car car) {
-        List<Point> points = car.getPointList();
+    private boolean detectTour(Drone drone) {
+        List<Point> points = drone.getPointList();
         Set<Point> uniquePoints = new HashSet<>(points);
 
         // Check if the number of unique points is less than the total points, meaning there are duplicates
         if (uniquePoints.size() < points.size() && uniquePoints.size()>1) {
             // Reset the point list and lap time
-            car.setPointList(new ArrayList<>(List.of(car.getLastPoint())));
+            drone.setPointList(new ArrayList<>(List.of(drone.getLastPoint())));
             // Tour detected due to duplicate points
             return true;
         }
         boolean result = points.equals(getCircuitPoints());
         if (result) {
-            car.setPointList(new ArrayList<>(List.of(car.getLastPoint())));
+            drone.setPointList(new ArrayList<>(List.of(drone.getLastPoint())));
         }
         return result;
     }
@@ -100,9 +100,9 @@ public class RaceMaintainer {
 
     private void sendCarPositions(PositionHandler positionHandler) {
         try {
-            Map<String, Car> carsMap = new HashMap<>();
-            for (Car car : race.cars()) {
-                carsMap.put(car.getBrand(), car);
+            Map<String, Drone> carsMap = new HashMap<>();
+            for (Drone drone : race.drones()) {
+                carsMap.put(drone.getBrand(), drone);
             }
             // Send all cars positions
             positionHandler.sendPositions(carsMap);
@@ -122,8 +122,8 @@ public class RaceMaintainer {
         return race.points();
     }
 
-    public void addCar(Car car){
-        race.addCar(car);
+    public void addCar(Drone drone){
+        race.addCar(drone);
     }
 
     public void reset() {
