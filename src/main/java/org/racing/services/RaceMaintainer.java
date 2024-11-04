@@ -129,7 +129,6 @@ public class RaceMaintainer {
     public void reset() {
         stopSimulation();
         resetRace();
-        //sendCarPositions(positionHandler);
     }
 }
 
