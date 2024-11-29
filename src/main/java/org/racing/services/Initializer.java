@@ -27,7 +27,7 @@ public class Initializer {
         );
         Circuit circuit = SETTER.of(points);
         List<Drone> droneList = new ArrayList<>();
-        droneList.add(new Drone("Loïc", new Motor(0, 10), 1.5));
+        droneList.add(new Drone("Lamborghini", new Motor(0, 10), 1.5));
         return new Race(droneList, circuit);
     }
 }
